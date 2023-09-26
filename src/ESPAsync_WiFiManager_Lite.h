@@ -2855,7 +2855,8 @@ private:
       dnsServer->start(DNS_PORT, "*", portal_apIP);
 
       // reply to all requests with same HTML
-      server->onNotFound([this](AsyncWebServerRequest* request) { handleRequest(request); });
+      server->on("/settings", HTTP_GET,
+                 [this](AsyncWebServerRequest* request) { handleRequest(request); });
 
       server->begin();
     }
@@ -3016,6 +3017,7 @@ private:
   //////////////////////////////////////////
 
 #  endif
+  AsyncWebServer* getWebServer() { return server; }
 };
 
 #endif  // ESPAsync_WiFiManager_Lite_h
