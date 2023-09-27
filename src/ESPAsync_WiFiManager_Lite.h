@@ -469,7 +469,7 @@ const char ESP_WM_LITE_HTML_BUTTON[] PROGMEM = "<button onclick=\"sv()\">Save</b
 #  if USING_BOARD_NAME
 const char ESP_WM_LITE_HTML_SCRIPT[] PROGMEM
     = "<script id=\"jsbin-javascript\">\
-  function udVal(key,val){var request=new XMLHttpRequest();var url='/?key='+key+'&value='+encodeURIComponent(val);\
+  function udVal(key,val){var request=new XMLHttpRequest();var url='/settings?key='+key+'&value='+encodeURIComponent(val);\
   request.open('GET',url,false);request.send(null);}\
   function sv(){udVal('id',document.getElementById('id').value);udVal('pw',document.getElementById('pw').value);\
   udVal('id1',document.getElementById('id1').value);udVal('pw1',document.getElementById('pw1').value);\
@@ -477,7 +477,7 @@ const char ESP_WM_LITE_HTML_SCRIPT[] PROGMEM
 #  else
 const char ESP_WM_LITE_HTML_SCRIPT[] PROGMEM
     = "<script id=\"jsbin-javascript\">\
-  function udVal(key,val){var request=new XMLHttpRequest();var url='/?key='+key+'&value='+encodeURIComponent(val);\
+  function udVal(key,val){var request=new XMLHttpRequest();var url='/settings?key='+key+'&value='+encodeURIComponent(val);\
   request.open('GET',url,false);request.send(null);}\
   function sv(){udVal('id',document.getElementById('id').value);udVal('pw',document.getElementById('pw').value);\
   udVal('id1',document.getElementById('id1').value);udVal('pw1',document.getElementById('pw1').value);";
@@ -984,6 +984,10 @@ public:
   void setConfigPortalIP(const IPAddress& portalIP = IPAddress(192, 168, 4, 1)) {
     portal_apIP = portalIP;
   }
+
+  //////////////////////////////////////////////
+
+  AsyncWebServer* getWebServer() { return server; }
 
   //////////////////////////////////////////////
 
@@ -2858,7 +2862,7 @@ private:
       server->on("/settings", HTTP_GET,
                  [this](AsyncWebServerRequest* request) { handleRequest(request); });
 
-      server->begin();
+      // server->begin();
     }
 
     // If there is no saved config Data, stay in config mode forever until having config Data.
@@ -3017,7 +3021,6 @@ private:
   //////////////////////////////////////////
 
 #  endif
-  AsyncWebServer* getWebServer() { return server; }
 };
 
 #endif  // ESPAsync_WiFiManager_Lite_h
